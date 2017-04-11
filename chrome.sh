@@ -1,10 +1,10 @@
 #!/bin/sh
 
 help=$(cat <<EOF
-Usage: ${0##*/} [-hvk] [-p PATH] DOMAIN/IP
-Make http request as if you were chrome.
+Usage: ${0##*/} [-hvsk] [-p PATH] [-m MATHDO] DOMAIN/IP
+Make http requests as if you were chrome. Requires 'ncat' from nmap package.
     -h         show this help
-    -v         be verbose (show request sent)
+    -v         be verbose (show the request sent)
     -p PATH    specify path name, default /
     -m METHOD  specify http method, default GET
     -s         secure, use https
@@ -39,9 +39,10 @@ then
 fi
 host="$1"
 
-# debug
-echo "$host" $verbose $keepalive
+# echo "$host" $verbose $keepalive
 
+# a bash way of doing this would be $'\r', but we want to be posix compliant
+# CR=$(printf '\r')
 request=$(cat <<EOF
 $method $path HTTP/1.1
 Host: $host
